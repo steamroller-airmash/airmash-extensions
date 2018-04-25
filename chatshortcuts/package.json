@@ -1,0 +1,28 @@
+{
+  "name": "chatshortcuts",
+  "version": "0.0.1",
+  "description": "A StarMash extension to run JavaScript from the chat bar.",
+  "main": "chatshortcuts.js",
+  "scripts": {
+    "browserify": "browserify --node chatshortcuts.js -o chatshortcuts.min.js",
+    "build": "browserify --node chatshortcuts.js | babel -s inline --presets=es2015 | uglifyjs -cm > chatshortcuts.min.js",
+    "lint": "jshint chatshortcuts.js",
+    "prebuild": "npm run lint",
+    "simplify": "simplify-geojson -t 2.0 < node_modules/which-country/lib/data.geo.json > data2.geo.json && type data2.geo.json > node_modules/which-country/lib/data.geo.json",
+    "restore": "type data.geo.json > node_modules/which-country/lib/data.geo.json",
+    "minify2": "google-closure-compiler-js chatshortcuts.js --languageIn ES6 --compilationLevel ADVANCED --externs externs.js > chatshortcuts.min.js"
+  },
+  "author": "STEAMROLLER",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "browserify": "^16.2.0",
+    "jshint": "^2.9.5",
+    "uglify-js": "^3.3.20",
+    "google-closure-compiler-js": "^20180402.0.0"
+  },
+  "jshintConfig": {
+    "esversion": 6
+  }
+}
