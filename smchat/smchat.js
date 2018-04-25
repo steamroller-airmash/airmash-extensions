@@ -1,53 +1,41 @@
 
-(function () {
-    var shortcuts = {
-        "/lennys": "( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)",
-        "/lenny": "( ͡° ͜ʖ ͡°)",
-        "/shrug": "¯\_(ツ)_/¯",
-        "/guns": "̿̿ ̿̿ ̿̿ ̿'̿'\̵͇̿̿\з= ( ▀ ͜͞ʖ▀) =ε/̵͇̿̿/’̿’̿ ̿ ̿̿ ̿̿ ̿̿",
-        "/bear": "ʕ•ᴥ•ʔ",
-        "/sunglasses": "(▀̿Ĺ̯▀̿ ̿)",
-        "/fists": "(ง ͠° ͟ل͜ ͡°)ง",
-        "/hug": "༼ つ ◕_◕ ༽つ",
-        "/tableflip": "(ノಠ益ಠ)ノ彡┻━┻"
-    };
+(function() {
+    const channelName = 'public';
+    var channel;
 
-    function replaceChat(text) {
-        for (var cmd in shortcuts) {
-            text = text.split(cmd).join(shortcuts[cmd]);
-        }
-        return text;
+    var pusher = new Pusher({
+        appId: "498052",
+        key: "6b38144aa630465c2188",
+        secret: "b14372c41a49f06027fa",
+        encrypted: true
+    });
+
+    function sendPusherChat(message) {
+        pusher.trigger(channelName, 'client-chat', {
+            id: Players.getMe().id,
+            message: message
+        });
+    }
+
+    function receivePusherChat(data) {
+        let id = data.id;
+        
+        UI.addChatLine(Players.getById(id), data.message, 5);
     }
 
     SWAM.on("gameRunning", function () {
-        let oldSendChat = Network.sendChat;
-        let oldSendTeam = Network.sendTeam;
-        let oldSendSay  = Network.sendSay;
-        let oldSendWhisper = Network.sendWhisper;
         let oldParseCommand = UI.parseCommand;
 
-        Network.sendChat = function(message) {
-            oldSendChat(replaceChat(message));
-        };
+        channel = pusher.subscribe(channelName);
 
-        Network.sendTeam = function(message) {
-            oldSendTeam(replaceChat(message));
-        };
-
-        Network.sendSay = function(message) {
-            oldSendSay(replaceChat(message));
-        };
-
-        Network.sendWhisper = function(id, message) {
-            oldSendWhisper(id, replaceChat(message));
-        };
+        channel.bind('client-chat', receivePusherChat);
 
         UI.parseCommand = function(cmd) {
-            for (var shrt in shortcuts) {
-                if (cmd.trim().toLowerCase().startsWith(shrt)) {
-                    Network.sendChat(replaceChat(cmd.trim()));
-                    return true;
-                }
+            if (cmd.toLowerCase().startsWith('/sm ')) {
+                let msg = cmd.substr(3).trim();
+
+                sendPusherChat(msg);
+                return true;
             }
 
             return oldParseCommand(cmd);
@@ -55,10 +43,10 @@
     });
 
     var obj = {
-        name: "Chat Shortcuts",
-        id: "steamroller-chatshortcuts",
-        description: "Adds some chat shortcuts.",
-        version: "0.0.3",
+        name: "StarMash Chat",
+        id: "steamroller-smchat",
+        description: "Allows StarMash users to chat when votemuted.",
+        version: "0.0.1",
     };
 
     /* jshint ignore:start */

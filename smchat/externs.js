@@ -31,3 +31,7 @@ var Network = {
     sendWhisper: function(e) {},
     sendSay: function(e) {}
 };
+
+var Players = {
+    getMe: function() { return {}; } 
+}

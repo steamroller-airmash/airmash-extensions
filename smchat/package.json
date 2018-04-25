@@ -5,10 +5,9 @@
   "main": "smchat.js",
   "scripts": {
     "browserify": "browserify --node smchat.js -o smchat.min.js",
-    "build": "browserify --node smchat.js | babel -s inline --presets=es2015 | uglifyjs -cm > smchat.min.js",
+    "build": "browserify --node smchat.js pusher.min.js | babel -s inline --presets=env | uglifyjs -cm > smchat.min.js",
     "lint": "jshint smchat.js",
     "prebuild": "npm run lint",
-    "simplify": "simplify-geojson -t 2.0 < node_modules/which-country/lib/data.geo.json > data2.geo.json && type data2.geo.json > node_modules/which-country/lib/data.geo.json",
     "restore": "type data.geo.json > node_modules/which-country/lib/data.geo.json",
     "minify2": "google-closure-compiler-js smchat.js --languageIn ES6 --compilationLevel ADVANCED --externs externs.js > smchat.min.js"
   },
@@ -24,5 +23,9 @@
   },
   "jshintConfig": {
     "esversion": 6
+  },
+  "dependencies": {
+    "npm": "^6.0.0",
+    "pusher-js": "^4.2.2"
   }
 }
