@@ -3,11 +3,15 @@
     const channelName = 'public';
     var channel;
 
-    var pusher = new Pusher({
-        appId: "498052",
-        key: "6b38144aa630465c2188",
-        secret: "b14372c41a49f06027fa",
-        encrypted: true
+    var pusher ;
+    
+    $.getScript("https://js.pusher.com/4.2/pusher.min.js", function() {
+        pusher = new Pusher({
+            appId: "498052",
+            key: "6b38144aa630465c2188",
+            secret: "b14372c41a49f06027fa",
+            encrypted: true
+        });
     });
 
     function sendPusherChat(message) {
@@ -25,11 +29,6 @@
 
     SWAM.on("gameRunning", function () {
         let oldParseCommand = UI.parseCommand;
-
-        channel = pusher.subscribe(channelName);
-
-        channel.bind('client-chat', receivePusherChat);
-
         UI.parseCommand = function(cmd) {
             if (cmd.toLowerCase().startsWith('/sm ')) {
                 let msg = cmd.substr(3).trim();
@@ -40,6 +39,12 @@
 
             return oldParseCommand(cmd);
         };
+
+        console.log("startup");
+
+        channel = pusher.subscribe(channelName);
+
+        channel.bind('client-chat', receivePusherChat);
     });
 
     var obj = {

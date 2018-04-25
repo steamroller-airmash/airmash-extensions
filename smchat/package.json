@@ -5,7 +5,7 @@
   "main": "smchat.js",
   "scripts": {
     "browserify": "browserify --node smchat.js -o smchat.min.js",
-    "build": "browserify --node smchat.js pusher.min.js | babel -s inline --presets=env | uglifyjs -cm > smchat.min.js",
+    "build": "browserify --node smchat.js | babel -s inline --presets=env | uglifyjs -cm > smchat.min.js",
     "lint": "jshint smchat.js",
     "prebuild": "npm run lint",
     "restore": "type data.geo.json > node_modules/which-country/lib/data.geo.json",
