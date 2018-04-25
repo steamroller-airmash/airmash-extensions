@@ -1,0 +1,15 @@
+
+.vs
+
+geolocator/node_modules
+geolocator/data2.geo.json
+
+execjs/node_modules
+
+chatshortcuts/node_modules
+chatshortcuts/.vs
+
+smchat/node_modules
+smchat/.vs
+
+notes/_build
