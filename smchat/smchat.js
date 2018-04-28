@@ -4,18 +4,39 @@
     var channel;
 
     var pusher ;
+
+    var cachedScript = function( url, options ) {
+        
+         // Allow user to set any option except for dataType, cache, and url
+         options = $.extend( options || {}, {
+           dataType: "script",
+           cache: true,
+           url: url
+         });
+        
+         // Use $.ajax() since it is more flexible than $.getScript
+         // Return the jqXHR object so we can chain callbacks
+         return jQuery.ajax( options );
+       };
     
-    $.getScript("https://js.pusher.com/4.2/pusher.min.js", function() {
+    cachedScript("https://js.pusher.com/4.2/pusher.min.js")
+    .done(function() {
         pusher = new Pusher({
             appId: "498052",
             key: "6b38144aa630465c2188",
             secret: "b14372c41a49f06027fa",
             encrypted: true
         });
+
+        console.log("startup");
+
+        channel = pusher.subscribe(channelName);
+
+        channel.bind('client-chat', receivePusherChat);
     });
 
     function sendPusherChat(message) {
-        pusher.trigger(channelName, 'client-chat', {
+        channel.trigger(channelName, 'client-chat', {
             id: Players.getMe().id,
             message: message
         });
@@ -39,12 +60,6 @@
 
             return oldParseCommand(cmd);
         };
-
-        console.log("startup");
-
-        channel = pusher.subscribe(channelName);
-
-        channel.bind('client-chat', receivePusherChat);
     });
 
     var obj = {
