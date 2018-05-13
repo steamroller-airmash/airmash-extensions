@@ -1,6 +1,9 @@
 
 .vs
 
+flightrecorder/node_modules
+flightrecorder/.vs
+
 geolocator/node_modules
 geolocator/data2.geo.json
 
