@@ -1,0 +1,9 @@
+{
+  "name": "admin",
+  "version": "0.0.1",
+  "description": "Admin commands extension for alternate server",
+  "main": "admin-commands.js",
+  "author": "STEAMROLLER",
+  "license": "MIT",
+  "private": true
+}

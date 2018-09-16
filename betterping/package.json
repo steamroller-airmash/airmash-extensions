@@ -1,0 +1,11 @@
+{
+  "name": "betterping",
+  "version": "0.0.1",
+  "description": "",
+  "main": "betterping.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "STEAMROLLER",
+  "license": "MIT"
+}
