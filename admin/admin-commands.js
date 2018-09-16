@@ -5,12 +5,8 @@
         var command = vals[0];
         var data = vals.slice(1).join(" ");
 
-        console.log(cmdText, vals, command, data);
-
         if (!command || !data)
           return;
-
-        console.log(command, data);
 
         Network.sendCommand(command, data);
     }
@@ -19,7 +15,6 @@
         var UI_parseCommand = UI.parseCommand;
 
         UI.parseCommand = function(cmd) {
-            console.log(cmd);
             if (cmd.startsWith("/admin ")) {
                 adminCommandHandler(cmd.substr("/admin ".length));
                 return true;
